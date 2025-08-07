@@ -1,0 +1,111 @@
+{
+  "business_logic": [
+    {
+      "description": "Function appears to handle login-related logic",
+      "file": "auth/login.py",
+      "function": "login",
+      "type": "Business Function",
+      "value": "Potential API endpoint or business rule"
+    },
+    {
+      "description": "Function appears to handle permission-related logic",
+      "file": "auth/login.py",
+      "function": "check_permissions",
+      "type": "Business Function",
+      "value": "Potential API endpoint or business rule"
+    },
+    {
+      "description": "Input validation or business rule validation",
+      "file": "auth/login.py",
+      "function": "check_permissions",
+      "type": "Validation Logic",
+      "value": "Could be extracted into reusable validation service"
+    },
+    {
+      "description": "Function appears to handle calculate-related logic",
+      "file": "services/payment_service.py",
+      "function": "calculate_invoice_total",
+      "type": "Business Function",
+      "value": "Potential API endpoint or business rule"
+    },
+    {
+      "description": "Function appears to handle process-related logic",
+      "file": "services/payment_service.py",
+      "function": "process_customer_payment",
+      "type": "Business Function",
+      "value": "Potential API endpoint or business rule"
+    }
+  ],
+  "code_smells": [
+    {
+      "description": "File has cyclomatic complexity of 18",
+      "file": "core/calculator.py",
+      "line": 1,
+      "suggestion": "Consider breaking down complex functions",
+      "type": "High Complexity"
+    },
+    {
+      "description": "Line too long (148 characters)",
+      "file": "utils/formatter.py",
+      "line": 4,
+      "suggestion": "Break line into multiple lines",
+      "type": "Long Line"
+    },
+    {
+      "description": "TODO/FIXME comment found",
+      "file": "utils/formatter.py",
+      "line": 4,
+      "suggestion": "Address pending work item",
+      "type": "Technical Debt"
+    },
+    {
+      "description": "Line too long (155 characters)",
+      "file": "utils/formatter.py",
+      "line": 5,
+      "suggestion": "Break line into multiple lines",
+      "type": "Long Line"
+    },
+    {
+      "description": "TODO/FIXME comment found",
+      "file": "auth/login.py",
+      "line": 11,
+      "suggestion": "Address pending work item",
+      "type": "Technical Debt"
+    },
+    {
+      "description": "Magic number found",
+      "file": "core/calculator.py",
+      "line": 8,
+      "suggestion": "Replace with named constant",
+      "type": "Magic Number"
+    },
+    {
+      "description": "Magic number found",
+      "file": "core/calculator.py",
+      "line": 10,
+      "suggestion": "Replace with named constant",
+      "type": "Magic Number"
+    }
+  ],
+  "complexity_score": 5.75,
+  "generated_at": "2025-08-07T22:49:59.282525",
+  "job_id": "61f86ee3-6e18-480e-b47a-a1fb2b694875",
+  "languages": {
+    "Python": 4
+  },
+  "project_name": "61f86ee3-6e18-480e-b47a-a1fb2b694875_extracted",
+  "recommendations": [
+    "Implement security scanning in your CI/CD pipeline."
+  ],
+  "security_issues": [
+    {
+      "description": "Potential hardcoded secret found",
+      "file": "auth/login.py",
+      "line": 3,
+      "severity": "Medium",
+      "type": "Hardcoded Secret"
+    }
+  ],
+  "total_files": 4,
+  "total_lines": 33
+}

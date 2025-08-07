@@ -1,0 +1,17 @@
+{
+  "business_logic": [],
+  "code_smells": [],
+  "complexity_score": 0,
+  "generated_at": "2025-08-07T22:50:24.194104",
+  "job_id": "250eade0-5e40-4812-83d9-5f032b9cb767",
+  "languages": {
+    "Go": 1
+  },
+  "project_name": "250eade0-5e40-4812-83d9-5f032b9cb767_extracted",
+  "recommendations": [
+    "Codebase appears well-maintained. Continue monitoring complexity and security."
+  ],
+  "security_issues": [],
+  "total_files": 1,
+  "total_lines": 72
+}

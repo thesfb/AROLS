@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00d4ff 0%, #ff00ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+        
+        .upload-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .file-input-wrapper:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .file-input {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .upload-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .status-pending { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+        .status-processing { background: rgba(0, 123, 255, 0.2); color: #007bff; }
+        .status-completed { background: rgba(40, 167, 69, 0.2); color: #28a745; }
+        .status-failed { background: rgba(220, 53, 69, 0.2); color: #dc3545; }
+        
+        .results-section {
+            display: none;
+        }
+        
+        .result-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .result-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .metric {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #00d4ff;
+        }
+        
+        .metric-label {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .issue-list {
+            list-style: none;
+        }
+        
+        .issue-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border-left: 4px solid #ff006e;
+        }
+        
+        .issue-high { border-left-color: #dc3545; }
+        .issue-medium { border-left-color: #ffc107; }
+        .issue-low { border-left-color: #28a745; }
+        
+        .recommendation-item {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border-left: 4px solid #00ff88;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #ff00ff);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">CodeArcheology MVP</h1>
+            <p class="subtitle">Uncover hidden insights in your legacy codebase</p>
+        </header>
+
+        <!-- Upload Section -->
+        <section class="upload-section" id="uploadSection">
+            <h2 style="margin-bottom: 1rem;">Upload Your Codebase</h2>
+            <form class="upload-form" id="uploadForm">
+                <div class="file-input-wrapper" onclick="document.getElementById('fileInput').click()">
+                    <input type="file" id="fileInput" class="file-input" accept=".zip" required>
+                    
+                    <div id="fileInfo">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">📁</div>
+                        <div>Drop your ZIP file here or <strong>click to browse</strong></div>
+                        <div style="font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem;">
+                            Supports: Python, JavaScript, Go, Java, C++, and more
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="upload-btn" id="uploadBtn">
+                    🔍 Start Analysis
+                </button>
+            </form>
+        </section>
+
+        <!-- Status Section -->
+        <section class="status-section" id="statusSection">
+            <h2 style="margin-bottom: 1rem;">Analysis Status</h2>
+            <div id="statusContent">
+                <span class="status-badge status-pending" id="statusBadge">Pending</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <p id="statusMessage">Initializing analysis...</p>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection">
+            <div class="result-card">
+                <h2 class="result-title">📊 Project Overview</h2>
+                <div class="metric-grid" id="overviewMetrics"></div>
+            </div>
+
+            <div class="result-card">
+                <h2 class="result-title">🛡️ Security Issues</h2>
+                <div id="securityIssues"></div>
+            </div>
+
+            <div class="result-card">
+                <h2 class="result-title">🔧 Code Quality Issues</h2>
+                <div id="codeSmells"></div>
+            </div>
+
+            <div class="result-card">
+                <h2 class="result-title">💼 Business Logic Patterns</h2>
+                <div id="businessLogic"></div>
+            </div>
+
+            <div class="result-card">
+                <h2 class="result-title">💡 Recommendations</h2>
+                <div id="recommendations"></div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button onclick="resetAnalysis()" class="upload-btn">
+                    🔄 Analyze Another Project
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let currentJobId = null;
+        let pollInterval = null;
+
+        // Corrected JavaScript
+document.getElementById('fileInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const fileInfoDiv = document.getElementById('fileInfo'); // Target the new div
+    if (file && fileInfoDiv) {
+        // Only replace the content of the fileInfo div
+        fileInfoDiv.innerHTML = `
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">✅</div>
+            <div><strong>${file.name}</strong></div>
+            <div style="font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem;">
+                ${(file.size / 1024 / 1024).toFixed(2)} MB
+            </div>
+        `;
+    }
+});
+
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a ZIP file to upload');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('codebase', file);
+
+            const uploadBtn = document.getElementById('uploadBtn');
+            uploadBtn.disabled = true;
+            uploadBtn.innerHTML = '⏳ Uploading...';
+
+            try {
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    currentJobId = result.job_id;
+                    showStatusSection();
+                    startPolling();
+                } else {
+                    throw new Error(result.error || 'Upload failed');
+                }
+            } catch (error) {
+                alert('Upload failed: ' + error.message);
+                uploadBtn.disabled = false;
+                uploadBtn.innerHTML = '🔍 Start Analysis';
+            }
+        });
+
+        function showStatusSection() {
+            document.getElementById('uploadSection').style.display = 'none';
+            document.getElementById('statusSection').style.display = 'block';
+        }
+
+        function startPolling() {
+            updateStatus('pending', 'Analysis queued...', 10);
+            
+            pollInterval = setInterval(async () => {
+                if (!currentJobId) return;
+
+                try {
+                    const response = await fetch(`/api/job/${currentJobId}`);
+                    const job = await response.json();
+
+                    if (job.status === 'processing') {
+                        updateStatus('processing', 'Analyzing your codebase...', 50);
+                    } else if (job.status === 'completed') {
+                        updateStatus('completed', 'Analysis complete!', 100);
+                        clearInterval(pollInterval);
+                        setTimeout(loadResults, 1000);
+                    } else if (job.status === 'failed') {
+                        updateStatus('failed', 'Analysis failed. Please try again.', 0);
+                        clearInterval(pollInterval);
+                    }
+                } catch (error) {
+                    console.error('Polling error:', error);
+                }
+            }, 2000);
+        }
+
+        function updateStatus(status, message, progress) {
+            const statusBadge = document.getElementById('statusBadge');
+            const statusMessage = document.getElementById('statusMessage');
+            const progressFill = document.getElementById('progressFill');
+
+            statusBadge.className = `status-badge status-${status}`;
+            statusBadge.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+            statusMessage.textContent = message;
+            progressFill.style.width = progress + '%';
+        }
+
+        async function loadResults() {
+            try {
+                const response = await fetch(`/api/result/${currentJobId}`);
+                const results = await response.json();
+
+                displayResults(results);
+                document.getElementById('statusSection').style.display = 'none';
+                document.getElementById('resultsSection').style.display = 'block';
+            } catch (error) {
+                console.error('Failed to load results:', error);
+            }
+        }
+
+        function displayResults(results) {
+            const overviewMetrics = document.getElementById('overviewMetrics');
+            overviewMetrics.innerHTML = `
+                <div class="metric">
+                    <div class="metric-value">${results.total_files}</div>
+                    <div class="metric-label">Total Files</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">${results.total_lines.toLocaleString()}</div>
+                    <div class="metric-label">Lines of Code</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">${Object.keys(results.languages).length}</div>
+                    <div class="metric-label">Languages</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">${results.complexity_score}</div>
+                    <div class="metric-label">Complexity Score</div>
+                </div>
+            `;
+
+            const languageList = Object.entries(results.languages)
+                .sort(([,a], [,b]) => b - a)
+                .map(([lang, count]) => `<span style="display: inline-block; background: rgba(0,212,255,0.2); padding: 0.2rem 0.5rem; border-radius: 10px; margin: 0.2rem; font-size: 0.9rem;">${lang}: ${count}</span>`)
+                .join('');
+            
+            overviewMetrics.innerHTML += `
+                <div class="metric" style="grid-column: 1 / -1;">
+                    <div class="metric-label" style="margin-bottom: 0.5rem;">Language Distribution</div>
+                    <div>${languageList}</div>
+                </div>
+            `;
+
+            displayIssuesList('securityIssues', results.security_issues, 'security');
+            displayIssuesList('codeSmells', results.code_smells, 'quality');
+            displayBusinessLogic(results.business_logic);
+            displayRecommendations(results.recommendations);
+        }
+
+        function displayIssuesList(elementId, issues, type) {
+            const container = document.getElementById(elementId);
+            
+            if (issues.length === 0) {
+                container.innerHTML = '<p style="opacity: 0.7;">✅ No issues found</p>';
+                return;
+            }
+
+            const issuesList = issues.map(issue => {
+                const severityClass = type === 'security' ? 
+                    `issue-${issue.severity.toLowerCase()}` : 
+                    'issue-medium';
+                
+                return `
+                    <div class="issue-item ${severityClass}">
+                        <div style="font-weight: 600; margin-bottom: 0.3rem;">
+                            ${issue.type || 'Issue'} ${type === 'security' ? `(${issue.severity})` : ''}
+                        </div>
+                        <div style="opacity: 0.8; font-size: 0.9rem; margin-bottom: 0.3rem;">
+                            ${issue.file}:${issue.line}
+                        </div>
+                        <div style="opacity: 0.9;">
+                            ${issue.description}
+                        </div>
+                        ${issue.suggestion ? `<div style="opacity: 0.7; font-style: italic; margin-top: 0.3rem;">💡 ${issue.suggestion}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = issuesList;
+        }
+
+        function displayBusinessLogic(businessLogic) {
+            const container = document.getElementById('businessLogic');
+            
+            if (businessLogic.length === 0) {
+                container.innerHTML = '<p style="opacity: 0.7;">No significant business logic patterns detected</p>';
+                return;
+            }
+
+            const logicList = businessLogic.map(logic => `
+                <div class="issue-item" style="border-left-color: #00ff88;">
+                    <div style="font-weight: 600; margin-bottom: 0.3rem;">
+                        ${logic.type}
+                    </div>
+                    <div style="opacity: 0.8; font-size: 0.9rem; margin-bottom: 0.3rem;">
+                        ${logic.file} → ${logic.function}
+                    </div>
+                    <div style="opacity: 0.9; margin-bottom: 0.3rem;">
+                        ${logic.description}
+                    </div>
+                    <div style="opacity: 0.7; font-style: italic; color: #00ff88;">
+                        💰 ${logic.value}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = logicList;
+        }
+
+        function displayRecommendations(recommendations) {
+            const container = document.getElementById('recommendations');
+            
+            const recommendationsList = recommendations.map(rec => `
+                <div class="recommendation-item">
+                    💡 ${rec}
+                </div>
+            `).join('');
+
+            container.innerHTML = recommendationsList;
+        }
+
+        function resetAnalysis() {
+            currentJobId = null;
+            if (pollInterval) {
+                clearInterval(pollInterval);
+                pollInterval = null;
+            }
+            
+            document.getElementById('uploadSection').style.display = 'block';
+            document.getElementById('statusSection').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'none';
+            
+            const uploadBtn = document.getElementById('uploadBtn');
+            uploadBtn.disabled = false;
+            uploadBtn.innerHTML = '🔍 Start Analysis';
+            
+            document.getElementById('fileInput').value = '';
+            document.querySelector('.file-input-wrapper').innerHTML = `
+                <div style="font-size: 3rem; margin-bottom: 0.5rem;">📁</div>
+                <div>Drop your ZIP file here or <strong>click to browse</strong></div>
+                <div style="font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem;">
+                    Supports: Python, JavaScript, Go, Java, C++, and more
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

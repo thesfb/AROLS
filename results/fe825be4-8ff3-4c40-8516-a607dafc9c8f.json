@@ -1,0 +1,17 @@
+{
+  "job_id": "",
+  "project_name": "fe825be4-8ff3-4c40-8516-a607dafc9c8f_extracted",
+  "total_files": 1,
+  "total_lines": 72,
+  "languages": {
+    "Go": 1
+  },
+  "complexity_score": 0.0,
+  "security_issues": [],
+  "code_smells": [],
+  "business_logic": [],
+  "recommendations": [
+    "Codebase appears well-maintained. Continue monitoring complexity and security."
+  ],
+  "generated_at": "2025-08-07T22:34:25.704108"
+}

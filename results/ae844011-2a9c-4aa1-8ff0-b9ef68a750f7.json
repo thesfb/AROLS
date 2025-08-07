@@ -1,0 +1,111 @@
+{
+  "job_id": "",
+  "project_name": "ae844011-2a9c-4aa1-8ff0-b9ef68a750f7_extracted",
+  "total_files": 4,
+  "total_lines": 33,
+  "languages": {
+    "Python": 4
+  },
+  "complexity_score": 5.75,
+  "security_issues": [
+    {
+      "type": "Hardcoded Secret",
+      "severity": "Medium",
+      "file": "auth/login.py",
+      "line": 3,
+      "description": "Potential hardcoded secret found"
+    }
+  ],
+  "code_smells": [
+    {
+      "type": "High Complexity",
+      "file": "core/calculator.py",
+      "line": 1,
+      "description": "File has cyclomatic complexity of 18",
+      "suggestion": "Consider breaking down complex functions"
+    },
+    {
+      "type": "Long Line",
+      "file": "utils/formatter.py",
+      "line": 4,
+      "description": "Line too long (148 characters)",
+      "suggestion": "Break line into multiple lines"
+    },
+    {
+      "type": "Technical Debt",
+      "file": "utils/formatter.py",
+      "line": 4,
+      "description": "TODO/FIXME comment found",
+      "suggestion": "Address pending work item"
+    },
+    {
+      "type": "Long Line",
+      "file": "utils/formatter.py",
+      "line": 5,
+      "description": "Line too long (155 characters)",
+      "suggestion": "Break line into multiple lines"
+    },
+    {
+      "type": "Technical Debt",
+      "file": "auth/login.py",
+      "line": 11,
+      "description": "TODO/FIXME comment found",
+      "suggestion": "Address pending work item"
+    },
+    {
+      "type": "Magic Number",
+      "file": "core/calculator.py",
+      "line": 8,
+      "description": "Magic number found",
+      "suggestion": "Replace with named constant"
+    },
+    {
+      "type": "Magic Number",
+      "file": "core/calculator.py",
+      "line": 10,
+      "description": "Magic number found",
+      "suggestion": "Replace with named constant"
+    }
+  ],
+  "business_logic": [
+    {
+      "type": "Business Function",
+      "file": "auth/login.py",
+      "function": "login",
+      "description": "Function appears to handle login-related logic",
+      "value": "Potential API endpoint or business rule"
+    },
+    {
+      "type": "Business Function",
+      "file": "auth/login.py",
+      "function": "check_permissions",
+      "description": "Function appears to handle permission-related logic",
+      "value": "Potential API endpoint or business rule"
+    },
+    {
+      "type": "Validation Logic",
+      "file": "auth/login.py",
+      "function": "check_permissions",
+      "description": "Input validation or business rule validation",
+      "value": "Could be extracted into reusable validation service"
+    },
+    {
+      "type": "Business Function",
+      "file": "services/payment_service.py",
+      "function": "calculate_invoice_total",
+      "description": "Function appears to handle calculate-related logic",
+      "value": "Potential API endpoint or business rule"
+    },
+    {
+      "type": "Business Function",
+      "file": "services/payment_service.py",
+      "function": "process_customer_payment",
+      "description": "Function appears to handle process-related logic",
+      "value": "Potential API endpoint or business rule"
+    }
+  ],
+  "recommendations": [
+    "Implement security scanning in your CI/CD pipeline."
+  ],
+  "generated_at": "2025-08-07T22:47:50.028937"
+}
