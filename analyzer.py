@@ -33,7 +33,7 @@ class CodeArcheologist:
         
     def analyze(self) -> Dict[str, Any]:
         """Main analysis pipeline"""
-        print(f"🔍 Starting analysis of {self.source_path}")
+        print(f" Starting analysis of {self.source_path}")
         
         # 1. File discovery and language detection
         self._discover_files()
@@ -53,7 +53,7 @@ class CodeArcheologist:
         # 6. Generate recommendations
         self._generate_recommendations()
         
-        print(f"✅ Analysis complete: {self.results['total_files']} files, {self.results['total_lines']} lines")
+        print(f" Analysis complete: {self.results['total_files']} files, {self.results['total_lines']} lines")
         return self.results
     
     def _discover_files(self):
@@ -341,10 +341,10 @@ def main():
         with open(output_path, 'w') as f:
             json.dump(results, f, indent=2)
         
-        print(f"📄 Analysis results written to {output_path}")
+        print(f" Analysis results written to {output_path}")
         
     except Exception as e:
-        print(f"❌ Analysis failed: {e}")
+        print(f" Analysis failed: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-radon>=5.1.0          # Advanced complexity metrics  
-bandit>=1.7.5         # Security analysis
-pylint>=2.17.0        # Code quality analysis
-tree-sitter>=0.20.1   # Multi-language parsing
+radon>=5.1.0     
+bandit>=1.7.5        
+pylint>=2.17.0       
+tree-sitter>=0.20.1 

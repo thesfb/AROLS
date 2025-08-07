@@ -101,7 +101,7 @@ func main() {
 		})
 	})
 
-	log.Println("🚀 CodeArcheology MVP starting on :8080")
+	log.Println(" CodeArcheology MVP starting on :8080")
 	log.Fatal(r.Run(":8080"))
 }
 
@@ -196,7 +196,7 @@ func runAnalysis(jobID string) {
 	job.ResultPath = resultPath
 	job.CompletedAt = &now
 
-	log.Printf("✅ Analysis completed for job %s", jobID)
+	log.Printf(" Analysis completed for job %s", jobID)
 }
 
 func updateJobIDInResult(resultPath, jobID string) error {

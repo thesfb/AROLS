@@ -11,7 +11,7 @@ API_URL = "http://localhost:8080"
 
 def create_dummy_project(base_path="temp_test_project"):
     """Creates a temporary directory with various Python files for testing."""
-    print(f"🔧 Creating dummy project at '{base_path}'...")
+    print(f" Creating dummy project at '{base_path}'...")
     
     # Clean up any previous runs
     if os.path.exists(base_path):
@@ -73,26 +73,26 @@ def create_dummy_project(base_path="temp_test_project"):
         with open(full_path, 'w') as f:
             f.write(content)
             
-    print("✅ Dummy project created.")
+    print(" Dummy project created.")
     return base_path
 
 def zip_project(project_path, zip_name="test_project.zip"):
     """Zips the contents of the project directory."""
-    print(f"📦 Zipping project '{project_path}' to '{zip_name}'...")
+    print(f" Zipping project '{project_path}' to '{zip_name}'...")
     shutil.make_archive(zip_name.replace('.zip', ''), 'zip', project_path)
-    print("✅ Project zipped.")
+    print(" Project zipped.")
     return zip_name
 
 def cleanup(paths):
     """Removes temporary files and directories."""
-    print("\n🧹 Cleaning up temporary files...")
+    print("\n Cleaning up temporary files...")
     for path in paths:
         if os.path.exists(path):
             if os.path.isdir(path):
                 shutil.rmtree(path)
             else:
                 os.remove(path)
-    print("✅ Cleanup complete.")
+    print(" Cleanup complete.")
 
 def run_test():
     """Main function to run the end-to-end test."""
@@ -105,7 +105,7 @@ def run_test():
         zip_path = zip_project(project_path)
 
         # 2. Upload and start analysis
-        print(f"\n🚀 Uploading '{zip_path}' to the server...")
+        print(f"\n Uploading '{zip_path}' to the server...")
         with open(zip_path, 'rb') as f:
             files = {'codebase': (zip_path, f, 'application/zip')}
             response = requests.post(f"{API_URL}/api/analyze", files=files)
@@ -117,10 +117,10 @@ def run_test():
         if not job_id:
             raise Exception("Failed to get job_id from server.")
             
-        print(f"✅ Upload successful. Job ID: {job_id}")
+        print(f" Upload successful. Job ID: {job_id}")
 
         # 3. Poll for results
-        print("\n⏳ Waiting for analysis to complete (checking every 2 seconds)...")
+        print("\n Waiting for analysis to complete (checking every 2 seconds)...")
         while True:
             response = requests.get(f"{API_URL}/api/job/{job_id}")
             response.raise_for_status()
@@ -130,7 +130,7 @@ def run_test():
             print(f"   Current status: {status}")
             
             if status == 'completed':
-                print("✅ Analysis complete!")
+                print(" Analysis complete!")
                 break
             if status == 'failed':
                 raise Exception("Analysis failed on the server.")
@@ -138,7 +138,7 @@ def run_test():
             time.sleep(2)
 
         # 4. Fetch and display results
-        print("\n📊 Fetching final results...")
+        print("\n Fetching final results...")
         response = requests.get(f"{API_URL}/api/result/{job_id}")
         response.raise_for_status()
         results = response.json()
@@ -148,11 +148,11 @@ def run_test():
         print("="*60)
 
     except requests.exceptions.RequestException as e:
-        print(f"\n❌ ERROR: Could not connect to the server at {API_URL}.")
+        print(f"\n ERROR: Could not connect to the server at {API_URL}.")
         print("   Please make sure your Go application is running.")
         print(f"   Details: {e}")
     except Exception as e:
-        print(f"\n❌ An error occurred: {e}")
+        print(f"\n An error occurred: {e}")
     finally:
         # 5. Cleanup
         if project_path and zip_path:
