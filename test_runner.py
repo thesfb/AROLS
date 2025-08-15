@@ -6,7 +6,7 @@ import time
 import json
 import textwrap
 
-# The base URL of your running Go application
+
 API_URL = "http://localhost:8080"
 
 def create_dummy_project(base_path="temp_test_project"):
